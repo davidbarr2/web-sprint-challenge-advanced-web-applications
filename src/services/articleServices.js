@@ -1,6 +1,20 @@
+import axiosWithAuth from "../utils/axiosWithAuth";
+import { useHistory } from "react-router";
+import { useEffect } from "react";
 
+async function articleService(){
+    console.log(setArticles)
 
-const articleService = ()=> {
+    let articles =[]
+
+    await axiosWithAuth()
+        .get('/articles')
+        .then( res => {
+             articles = res.data
+             console.log(articles)
+        })
+    
+    //return articles
 }
 
 export default articleService;

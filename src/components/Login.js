@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import axios from 'axios';
 
-const Login = () => {
+const Login = (props) => {
 
-    const [state,setState]=useState(initialState)
+    let history = useHistory()
 
-    initialState = {
+    const initialState = {
         credentials: {
           username: '',
           password: ''
@@ -13,7 +15,11 @@ const Login = () => {
         errorMessage: ''
       };
 
-    handleChange = e => {
+    const [state,setState]=useState(initialState)
+
+    
+
+    const handleChange = e => {
         setState({
             ...state,
           credentials: {
@@ -23,22 +29,21 @@ const Login = () => {
         });
       };
 
-    login = e => {
+    const login = e => {
         e.preventDefault();
-        //1. axios call http://localhost:5000/api/login pass in username and password through the body
-    
-        // axios.post('http://localhost:5000/api/login', this.state.credentials)
-        //   .then(resp=> {
-        //     //2. if the call is successful: save token in localStorage
-        //     localStorage.setItem('token', resp.data.token);
-        //     localStorage.setItem('role', resp.data.role);
-        //     localStorage.setItem('username', resp.data.username);
-        //     this.props.history.push('/protected');
-        //   })
-        //   .catch(err=> {
-        //     //3. if the call is unsuccessful: console.log error
-        //     console.log(err);
-        //   })
+        
+        axios.post('http://localhost:5000/api/login', state.credentials)
+          .then(resp=> {
+            //2. if the call is successful: save token in localStorage
+            localStorage.setItem('token', resp.data.token);
+            localStorage.setItem('role', resp.data.role);
+            localStorage.setItem('username', resp.data.username);
+            history.push('/view');
+          })
+          .catch(err=> {
+            //3. if the call is unsuccessful: console.log error
+            console.log(err);
+          })
       };
     
     return(<ComponentContainer>
