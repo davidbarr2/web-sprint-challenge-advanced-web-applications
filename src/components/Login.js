@@ -1,12 +1,68 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 const Login = () => {
+
+    const [state,setState]=useState(initialState)
+
+    initialState = {
+        credentials: {
+          username: '',
+          password: ''
+        },
+        errorMessage: ''
+      };
+
+    handleChange = e => {
+        setState({
+            ...state,
+          credentials: {
+            ...state.credentials,
+            [e.target.name]: e.target.value
+          },
+        });
+      };
+
+    login = e => {
+        e.preventDefault();
+        //1. axios call http://localhost:5000/api/login pass in username and password through the body
+    
+        // axios.post('http://localhost:5000/api/login', this.state.credentials)
+        //   .then(resp=> {
+        //     //2. if the call is successful: save token in localStorage
+        //     localStorage.setItem('token', resp.data.token);
+        //     localStorage.setItem('role', resp.data.role);
+        //     localStorage.setItem('username', resp.data.username);
+        //     this.props.history.push('/protected');
+        //   })
+        //   .catch(err=> {
+        //     //3. if the call is unsuccessful: console.log error
+        //     console.log(err);
+        //   })
+      };
     
     return(<ComponentContainer>
         <ModalContainer>
             <h1>Welcome to Blogger Pro</h1>
             <h2>Please enter your account information.</h2>
+            { state.errorMessage && <p id="error">{state.errorMessage}</p> }
+            <form onSubmit={login}>
+                <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    value={state.credentials.username}
+                    onChange={handleChange}
+                />
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    value={state.credentials.password}
+                    onChange={handleChange}
+                />
+          <button id="submit">Log in</button>
+        </form>
         </ModalContainer>
     </ComponentContainer>);
 }
